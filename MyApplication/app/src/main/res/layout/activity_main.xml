@@ -12,7 +12,7 @@
         android:id="@+id/buttonLoadPicture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="4"
+        android:layout_weight="0"
         android:text="Load Picture"
         android:layout_gravity="center"></Button>
 </LinearLayout>
