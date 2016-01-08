@@ -10,10 +10,15 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+
+
 
 public class MainActivity extends Activity {
 
 
+    SeekBar mybar;
     private static int RESULT_LOAD_IMAGE = 1;
 
 
@@ -22,7 +27,34 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        mybar = (SeekBar) findViewById(R.id.seekBar1);
+
+        mybar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                //add here your implementation
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+                //add here your implementation
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+
+                //add here your implementation
+            }
+        });
+
+
         Button buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
+
         buttonLoadImage.setOnClickListener(new View.OnClickListener() {
 
             @Override
