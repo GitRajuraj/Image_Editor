@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,12 +13,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
 
 
 public class MainActivity extends Activity {
 
-
+    ImageView imageView;
     SeekBar mybar;
     private static int RESULT_LOAD_IMAGE = 1;
 
@@ -48,6 +50,19 @@ public class MainActivity extends Activity {
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
 
+                ColorFilter filter = new LightingColorFilter( Color.RED, Color.BLACK);
+                ColorFilter filter1 = new LightingColorFilter( Color.GREEN, Color.BLACK);
+
+
+
+                if(imageView!=null) {
+                     if(progress >= 50 && progress < 75)
+                        imageView.setColorFilter(filter);
+                    else if(progress >=75 && progress < 100)
+                         imageView.setColorFilter(filter);
+                    
+
+                }
                 //add here your implementation
             }
         });
@@ -76,7 +91,7 @@ public class MainActivity extends Activity {
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
@@ -86,7 +101,7 @@ public class MainActivity extends Activity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            ImageView imageView = (ImageView) findViewById(R.id.imgView);
+            imageView = (ImageView) findViewById(R.id.imgView);
             imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
         }
