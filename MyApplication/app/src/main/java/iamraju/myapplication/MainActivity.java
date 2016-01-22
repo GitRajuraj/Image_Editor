@@ -19,7 +19,7 @@ import android.graphics.LightingColorFilter;
 
 public class MainActivity extends Activity {
 
-    ImageView imageView;
+    static ImageView imageView;
     SeekBar mybar;
     private static int RESULT_LOAD_IMAGE = 1;
 
@@ -50,20 +50,28 @@ public class MainActivity extends Activity {
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
 
-                ColorFilter filter = new LightingColorFilter( Color.RED, Color.BLACK);
-                ColorFilter filter1 = new LightingColorFilter( Color.GREEN, Color.BLACK);
+
+                ColorFilter filter1 = new LightingColorFilter(Color.WHITE, Color.BLACK);
+                ColorFilter filter2 = new LightingColorFilter(Color.GREEN, Color.BLACK);
+                ColorFilter filter3 = new LightingColorFilter(Color.RED, Color.BLACK);
 
 
+                if (imageView != null) {
 
-                if(imageView!=null) {
-                     if(progress >= 50 && progress < 75)
-                        imageView.setColorFilter(filter);
-                    else if(progress >=75 && progress < 100)
-                         imageView.setColorFilter(filter);
-                    
+                    if (progress >=0 && progress < 25)
+                        imageView.setColorFilter(0);
+
+                    if (progress >=25 && progress < 50)
+                        imageView.setColorFilter(filter1);
+
+
+                    if (progress >= 50 && progress < 75)
+                        imageView.setColorFilter(filter2);
+
+                    if (progress >= 75 && progress < 100)
+                        imageView.setColorFilter(filter3);
 
                 }
-                //add here your implementation
             }
         });
 
