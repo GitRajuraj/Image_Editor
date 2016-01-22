@@ -24,6 +24,19 @@
         android:layout_height="50dp"
         android:layout_weight="0"
         android:text="Load Picture"
-        android:layout_gravity="center"></Button>
+        android:layout_gravity="center"
+        android:textSize="10sp"
+        ></Button>
+
+
+    <Button
+        android:id="@+id/Save_Picture"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_weight="0"
+        android:text="Save Picture"
+        android:layout_gravity="center"
+        android:textSize="10sp"
+        ></Button>
 
 </LinearLayout>
