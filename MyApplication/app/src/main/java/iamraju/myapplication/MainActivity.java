@@ -10,10 +10,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
@@ -23,9 +25,8 @@ import java.util.Random;
 
 
 public class MainActivity extends Activity {
-
     Context context;
-    static ImageView imageView;
+    static ImageView imageView,main_imageView;
     SeekBar mybar;
     Bitmap bm;
     private static int RESULT_LOAD_IMAGE = 1;
@@ -94,9 +95,6 @@ public class MainActivity extends Activity {
 //        });
 
 
-
-
-
         Button buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
 
         buttonLoadImage.setOnClickListener(new View.OnClickListener() {
@@ -146,16 +144,52 @@ public class MainActivity extends Activity {
             cursor.close();
 
             imageView = (ImageView) findViewById(R.id.imgView);
+            main_imageView= (ImageView) findViewById(R.id.Main_imgView);
+
+            Bitmap bitmapImage = BitmapFactory.decodeFile(picturePath);
+
+            int nh1 = (int) ( bitmapImage.getHeight() * (512.0 / bitmapImage.getHeight() ));
+            int nw1 = (int) ( bitmapImage.getHeight() * (512.0 / bitmapImage.getWidth()) );
+
+
+            Bitmap scaled = Bitmap.createScaledBitmap(bitmapImage, nw1, nh1, true);
+            main_imageView.setImageBitmap(scaled);
+
 
 
             LinearLayout layout = (LinearLayout) findViewById(R.id.linear);
-            for (int i = 0; i < 10; i++) {
-                ImageView imageView = new ImageView(this);
-                imageView.setId(i);
-                imageView.setPadding(1, 1, 1, 1);
-                imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                imageView.setScaleType(ScaleType.FIT_XY);
-                layout.addView(imageView);
+
+            layout.setOnTouchListener(new OnTouchListener() {
+                        @Override
+                         public boolean onTouch(View v, MotionEvent event) {
+
+                        Log.d("jhjh","hvh");
+                        return true;
+                        }
+            });
+
+
+            if(layout!=null) {
+                layout.removeAllViews();
+
+                for (int i = 0; i < 10; i++) {
+
+                    ImageView imageView = new ImageView(this);
+                    imageView.setId(i);
+                    imageView.setPadding(1, 1, 1, 1);
+
+                    Bitmap bitmapImage1 = BitmapFactory.decodeFile(picturePath);
+                    int nh = (int) ( bitmapImage1.getHeight() * (512.0 / bitmapImage1.getHeight() ));
+                    int nw = (int) ( bitmapImage1.getHeight() * (512.0 / bitmapImage1.getWidth()) );
+
+                    Bitmap scaled1 = Bitmap.createScaledBitmap(bitmapImage1, 100, 100, true);
+                    imageView.setImageBitmap(scaled1);
+
+                    layout.addView(imageView);
+
+
+                }
+                
             }
 
 
