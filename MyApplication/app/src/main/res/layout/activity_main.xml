@@ -2,29 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <SeekBar
-        android:id="@+id/seekBar1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="10dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:indeterminate="false" />
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg"
+    >
+
+    <!--<SeekBar-->
+        <!--android:id="@+id/seekBar1"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:paddingLeft="15dp"-->
+        <!--android:paddingRight="15dp"-->
+        <!--android:indeterminate="false" />-->
     <ImageView
         android:id="@+id/imgView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"></ImageView>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontal_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        >
+
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+
+
+
     <Button
         android:id="@+id/buttonLoadPicture"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_weight="0"
         android:text="Load Picture"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:textSize="10sp"
         ></Button>
 
@@ -33,10 +56,10 @@
         android:id="@+id/Save_Picture"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_weight="0"
         android:text="Save Picture"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:textSize="10sp"
+
         ></Button>
 
 </LinearLayout>
