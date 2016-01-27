@@ -1,99 +1,37 @@
 package iamraju.myapplication;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Random;
 
 
 public class MainActivity extends Activity {
-    Context context;
-    static ImageView imageView,main_imageView;
-    SeekBar mybar;
-    Bitmap bm;
-    private static int RESULT_LOAD_IMAGE = 1;
 
+    static ImageView imageView1,imageView2,imageView3,imageView4,imageView5,imageView6,imageView7,imageView8,main_imageView;
+    private static int RESULT_LOAD_IMAGE = 1;
+    ColorFilter filter2 = new LightingColorFilter(Color.GREEN, Color.BLACK);
+    ColorFilter filter3 = new LightingColorFilter(Color.argb(0,0,0,0), Color.BLACK);
+    ColorFilter filter4 = new LightingColorFilter(Color.GRAY, Color.BLACK);
+    ColorFilter filter5 = new LightingColorFilter(Color.argb(255,230,170,90), Color.BLACK);
+    ColorFilter filter6 = new LightingColorFilter(Color.argb(255,150,100,80), Color.BLACK);
+    ColorFilter filter7 = new LightingColorFilter(Color.argb(255,80,200,210), Color.BLACK);
+    ColorFilter filter8 = new LightingColorFilter(Color.argb(255,220,100,80), Color.BLACK);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
-//        mybar = (SeekBar) findViewById(R.id.seekBar1);
-//
-//        mybar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//                //add here your implementation
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//                //add here your implementation
-//            }
-//
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress,
-//                                          boolean fromUser) {
-//
-//
-//                ColorFilter filter1 = new LightingColorFilter(Color.TRANSPARENT, Color.BLUE);
-//                ColorFilter filter2 = new LightingColorFilter(Color.GREEN, Color.BLACK);
-//                ColorFilter filter3 = new LightingColorFilter(Color.RED, Color.BLACK);
-//
-//
-//                if (imageView != null) {
-//
-//                    if (progress >=0 && progress < 25) {
-//                        imageView.setColorFilter(0);
-//                        imageView.buildDrawingCache();
-//                        bm = imageView.getDrawingCache();
-//                    }
-//                    if (progress >=25 && progress < 50) {
-//                        imageView.setColorFilter(filter1);
-//                        imageView.buildDrawingCache();
-//                        bm = imageView.getDrawingCache();
-//                    }
-//
-//                    if (progress >= 50 && progress < 75) {
-//                        imageView.setColorFilter(filter2);
-//                        imageView.buildDrawingCache();
-//                        bm = imageView.getDrawingCache();
-//                    }
-//                    if (progress >= 75 && progress < 100) {
-//
-//                        imageView.setColorFilter(filter3);
-//                        imageView.buildDrawingCache();
-//                        bm = imageView.getDrawingCache();
-//
-//                    }
-//                }
-//            }
-//        });
-
 
         Button buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
 
@@ -101,7 +39,6 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
-
                 Intent i = new Intent(
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -109,20 +46,6 @@ public class MainActivity extends Activity {
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
-
-
-
-        Button SaveImage = (Button) findViewById(R.id.Save_Picture);
-
-        SaveImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(imageView!=null)
-                    SaveImage(bm);
-            }
-        });
-
     }
 
 
@@ -143,84 +66,146 @@ public class MainActivity extends Activity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            imageView = (ImageView) findViewById(R.id.imgView);
             main_imageView= (ImageView) findViewById(R.id.Main_imgView);
+
+            imageView1 = (ImageView) findViewById(R.id.imgView1);
+            imageView2 = (ImageView) findViewById(R.id.imgView2);
+            imageView3 = (ImageView) findViewById(R.id.imgView3);
+            imageView4 = (ImageView) findViewById(R.id.imgView4);
+            imageView5 = (ImageView) findViewById(R.id.imgView5);
+            imageView6 = (ImageView) findViewById(R.id.imgView6);
+            imageView7 = (ImageView) findViewById(R.id.imgView7);
+            imageView8 = (ImageView) findViewById(R.id.imgView8);
+
 
             Bitmap bitmapImage = BitmapFactory.decodeFile(picturePath);
 
-            int nh1 = (int) ( bitmapImage.getHeight() * (512.0 / bitmapImage.getHeight() ));
-            int nw1 = (int) ( bitmapImage.getHeight() * (512.0 / bitmapImage.getWidth()) );
-
-
-            Bitmap scaled = Bitmap.createScaledBitmap(bitmapImage, nw1, nh1, true);
+            final  Bitmap scaled = Bitmap.createScaledBitmap(bitmapImage, bitmapImage.getWidth(), bitmapImage.getHeight(), true);
             main_imageView.setImageBitmap(scaled);
 
+            final Bitmap scaled_small = Bitmap.createScaledBitmap(bitmapImage, 100, 100, true);
 
+            imageView1.setImageBitmap(scaled_small);
+            imageView2.setImageBitmap(scaled_small);
+            imageView3.setImageBitmap(scaled_small);
+            imageView4.setImageBitmap(scaled_small);
+            imageView5.setImageBitmap(scaled_small);
+            imageView6.setImageBitmap(scaled_small);
+            imageView7.setImageBitmap(scaled_small);
+            imageView8.setImageBitmap(scaled_small);
 
-            LinearLayout layout = (LinearLayout) findViewById(R.id.linear);
+            imageView2.setColorFilter(filter2);
+            imageView3.setColorFilter(filter3);
+            imageView4.setColorFilter(filter4);
+            imageView5.setColorFilter(filter5);
+            imageView6.setColorFilter(filter6);
+            imageView7.setColorFilter(filter7);
+            imageView8.setColorFilter(filter8);
 
-            layout.setOnTouchListener(new OnTouchListener() {
-                        @Override
-                         public boolean onTouch(View v, MotionEvent event) {
-
-                        Log.d("jhjh","hvh");
-                        return true;
-                        }
+            imageView1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    main_imageView.setColorFilter(0);
+                }
             });
 
-
-            if(layout!=null) {
-                layout.removeAllViews();
-
-                for (int i = 0; i < 10; i++) {
-
-                    ImageView imageView = new ImageView(this);
-                    imageView.setId(i);
-                    imageView.setPadding(1, 1, 1, 1);
-
-                    Bitmap bitmapImage1 = BitmapFactory.decodeFile(picturePath);
-                    int nh = (int) ( bitmapImage1.getHeight() * (512.0 / bitmapImage1.getHeight() ));
-                    int nw = (int) ( bitmapImage1.getHeight() * (512.0 / bitmapImage1.getWidth()) );
-
-                    Bitmap scaled1 = Bitmap.createScaledBitmap(bitmapImage1, 100, 100, true);
-                    imageView.setImageBitmap(scaled1);
-
-                    layout.addView(imageView);
-
+            imageView2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    main_imageView.setColorFilter(filter2);
 
                 }
-                
+            });
+
+            imageView3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    main_imageView.setColorFilter(filter3);
+
+                }
+            });
+
+            imageView4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    main_imageView.setColorFilter(filter4);
+
+                }
+            });
+
+            imageView5.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    main_imageView.setColorFilter(filter5);
+
+                }
+            });
+
+            imageView6.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    main_imageView.setColorFilter(filter6);
+
+                }
+            });
+
+            imageView7.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    main_imageView.setColorFilter(filter7);
+
+                }
+            });
+            imageView8.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    main_imageView.setColorFilter(filter8);
+
+                }
+            });
+
+        }}
+
+    public static Bitmap createContrast(Bitmap src, double value) {
+// image size
+        int width = src.getWidth();
+        int height = src.getHeight();
+// create output bitmap
+        Bitmap bmOut = Bitmap.createBitmap(width, height, src.getConfig());
+// color information
+        int A, R, G, B;
+        int pixel;
+// get contrast value
+        double contrast = Math.pow((100 + value) / 100, 2);
+
+// scan through all pixels
+        for(int x = 0; x < width; ++x) {
+            for(int y = 0; y < height; ++y) {
+                // get pixel color
+                pixel = src.getPixel(x, y);
+                A = Color.alpha(pixel);
+                // apply filter contrast for every channel R, G, B
+                R = Color.red(pixel);
+                R = (int)(((((R / 255.0) - 0.5) * contrast) + 0.5) * 255.0);
+                if(R < 0) { R = 0; }
+                else if(R > 255) { R = 255; }
+
+                G = Color.red(pixel);
+                G = (int)(((((G / 255.0) - 0.5) * contrast) + 0.5) * 255.0);
+                if(G < 0) { G = 0; }
+                else if(G > 255) { G = 255; }
+
+                B = Color.red(pixel);
+                B = (int)(((((B / 255.0) - 0.5) * contrast) + 0.5) * 255.0);
+                if(B < 0) { B = 0; }
+                else if(B > 255) { B = 255; }
+
+                // set new pixel color to output bitmap
+                bmOut.setPixel(x, y, Color.argb(A, R, G, B));
             }
-
-
-
-
-//            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-//            imageView.setBackgroundColor(Color.BLACK);
-
-
         }
+
+        return bmOut;
     }
 
-    private void SaveImage(Bitmap finalBitmap) {
-
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/saved_images");
-        myDir.mkdirs();
-        Random generator = new Random();
-        int n = 10000;
-        n = generator.nextInt(n);
-        String fname = "Image-"+ n +".jpg";
-        File file = new File (myDir, fname);
-        if (file.exists ()) file.delete ();
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
