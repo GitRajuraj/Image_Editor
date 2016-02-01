@@ -6,6 +6,15 @@
     android:background="@drawable/bg"
     android:clickable="true"
     >
+    <Button
+        android:id="@+id/SaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="Save"
+        android:layout_gravity="center_horizontal"
+        android:textSize="10sp"
+        ></Button>
+
         <ImageView
         android:id="@+id/Main_imgView"
         android:layout_width="fill_parent"
@@ -13,6 +22,7 @@
         android:layout_weight="1"
         android:adjustViewBounds="true"
         ></ImageView>
+
     <HorizontalScrollView
     android:id="@+id/horizontal_scroll"
     android:layout_width="match_parent"

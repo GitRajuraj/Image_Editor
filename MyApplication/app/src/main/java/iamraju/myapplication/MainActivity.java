@@ -2,6 +2,7 @@ package iamraju.myapplication;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,16 +11,23 @@ import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Random;
 
 
 public class MainActivity extends Activity {
 
     static ImageView imageView1,imageView2,imageView3,imageView4,imageView5,imageView6,imageView7,imageView8,main_imageView;
     private static int RESULT_LOAD_IMAGE = 1;
+    int newWidth,newHeight,MainIw,MainIh;
+
+
     ColorFilter filter2 = new LightingColorFilter(Color.GREEN, Color.BLACK);
     ColorFilter filter3 = new LightingColorFilter(Color.argb(0,0,0,0), Color.BLACK);
     ColorFilter filter4 = new LightingColorFilter(Color.GRAY, Color.BLACK);
@@ -28,12 +36,15 @@ public class MainActivity extends Activity {
     ColorFilter filter7 = new LightingColorFilter(Color.argb(255,80,200,210), Color.BLACK);
     ColorFilter filter8 = new LightingColorFilter(Color.argb(255,220,100,80), Color.BLACK);
 
+    Bitmap bitmapImage,Save_bitmapImage,resizedBitmap;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Button buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
+        Button buttonSaveImage = (Button) findViewById(R.id.SaveButton);
 
         buttonLoadImage.setOnClickListener(new View.OnClickListener() {
 
@@ -42,8 +53,18 @@ public class MainActivity extends Activity {
                 Intent i = new Intent(
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(i, RESULT_LOAD_IMAGE);
+            }
+        });
 
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+
+
+        buttonSaveImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (main_imageView != null) {
+                    SaveImage(bitmapImage);
+                }
             }
         });
     }
@@ -77,13 +98,28 @@ public class MainActivity extends Activity {
             imageView7 = (ImageView) findViewById(R.id.imgView7);
             imageView8 = (ImageView) findViewById(R.id.imgView8);
 
+            bitmapImage = BitmapFactory.decodeFile(picturePath);
+            Save_bitmapImage = BitmapFactory.decodeFile(picturePath);
 
-            Bitmap bitmapImage = BitmapFactory.decodeFile(picturePath);
+            newWidth=Save_bitmapImage.getWidth();
+            newHeight=Save_bitmapImage.getHeight();
 
-            final  Bitmap scaled = Bitmap.createScaledBitmap(bitmapImage, bitmapImage.getWidth(), bitmapImage.getHeight(), true);
+            if(bitmapImage.getHeight()>getScreenHeight()/2)
+                MainIh=getScreenHeight()/3;
+            else
+                MainIh=getScreenHeight()/4;
+
+                MainIw=getScreenWidth()/2;
+
+
+            final  Bitmap scaled = Bitmap.createScaledBitmap(bitmapImage,MainIw,MainIh, true);
+
             main_imageView.setImageBitmap(scaled);
 
+
             final Bitmap scaled_small = Bitmap.createScaledBitmap(bitmapImage, 100, 100, true);
+
+
 
             imageView1.setImageBitmap(scaled_small);
             imageView2.setImageBitmap(scaled_small);
@@ -106,6 +142,9 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     main_imageView.setColorFilter(0);
+                    main_imageView.buildDrawingCache();
+                    bitmapImage = main_imageView.getDrawingCache();
+
                 }
             });
 
@@ -113,6 +152,9 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     main_imageView.setColorFilter(filter2);
+                    main_imageView.buildDrawingCache();
+
+                    bitmapImage = main_imageView.getDrawingCache();
 
                 }
             });
@@ -121,7 +163,8 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     main_imageView.setColorFilter(filter3);
-
+                    main_imageView.buildDrawingCache();
+                    bitmapImage = main_imageView.getDrawingCache();
                 }
             });
 
@@ -129,7 +172,8 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     main_imageView.setColorFilter(filter4);
-
+                    main_imageView.buildDrawingCache();
+                    bitmapImage = main_imageView.getDrawingCache();
                 }
             });
 
@@ -137,7 +181,8 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     main_imageView.setColorFilter(filter5);
-
+                    main_imageView.buildDrawingCache();
+                    bitmapImage = main_imageView.getDrawingCache();
                 }
             });
 
@@ -145,14 +190,18 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     main_imageView.setColorFilter(filter6);
-
-                }
+                    main_imageView.buildDrawingCache();
+                    bitmapImage = main_imageView.getDrawingCache();
+              }
             });
 
             imageView7.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     main_imageView.setColorFilter(filter7);
+                    main_imageView.buildDrawingCache();
+                    bitmapImage = main_imageView.getDrawingCache();
+
 
                 }
             });
@@ -160,6 +209,9 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     main_imageView.setColorFilter(filter8);
+                    main_imageView.buildDrawingCache();
+                    bitmapImage = main_imageView.getDrawingCache();
+
 
                 }
             });
@@ -206,6 +258,41 @@ public class MainActivity extends Activity {
         }
 
         return bmOut;
+    }
+
+
+
+    private void SaveImage(Bitmap finalBitmap) {
+
+                 resizedBitmap =
+                         Bitmap.createScaledBitmap(
+                    finalBitmap, newWidth, newHeight, false);
+                String root = Environment.getExternalStorageDirectory().toString();
+                File myDir = new File(root + "/SimlpyEdit");
+                myDir.mkdirs();
+                Random generator = new Random();
+                int n = 10000;
+                n = generator.nextInt(n);
+                String fname = "Image-"+ n +".jpg";
+                File file = new File (myDir, fname);
+                if (file.exists ()) file.delete ();
+               try {
+                        FileOutputStream out = new FileOutputStream(file);
+                   resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                        out.flush();
+                        out.close();
+                            } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+            }
+
+
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
 }
