@@ -6,6 +6,7 @@
     android:background="@drawable/bg"
     android:clickable="true"
     >
+
     <Button
         android:id="@+id/SaveButton"
         android:layout_width="wrap_content"
@@ -15,7 +16,16 @@
         android:textSize="10sp"
         ></Button>
 
-        <ImageView
+    <Button
+        android:id="@+id/Rotate"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="Rotate"
+        android:layout_gravity="center_horizontal"
+        android:textSize="10sp"
+        ></Button>
+
+    <ImageView
         android:id="@+id/Main_imgView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

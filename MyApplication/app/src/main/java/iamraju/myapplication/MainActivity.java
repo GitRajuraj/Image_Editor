@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.LightingColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.graphics.Matrix;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Random;
@@ -25,16 +28,18 @@ public class MainActivity extends Activity {
 
     static ImageView imageView1,imageView2,imageView3,imageView4,imageView5,imageView6,imageView7,imageView8,main_imageView;
     private static int RESULT_LOAD_IMAGE = 1;
-    int newWidth,newHeight,MainIw,MainIh;
+    int Rx,Ry,MainIw,MainIh;
 
+    ColorMatrixColorFilter filter2;
+    ColorMatrixColorFilter filter8;
 
-    ColorFilter filter2 = new LightingColorFilter(Color.GREEN, Color.BLACK);
-    ColorFilter filter3 = new LightingColorFilter(Color.argb(0,0,0,0), Color.BLACK);
-    ColorFilter filter4 = new LightingColorFilter(Color.GRAY, Color.BLACK);
+    //  ColorFilter filter2 = new LightingColorFilter(Color.argb(255,174,162,162), Color.BLACK);
+    ColorFilter filter3 = new LightingColorFilter(Color.argb(255,160,160,160), Color.BLACK);
+    ColorFilter filter4 = new LightingColorFilter(Color.argb(255,60,170,190), Color.BLACK);
     ColorFilter filter5 = new LightingColorFilter(Color.argb(255,230,170,90), Color.BLACK);
     ColorFilter filter6 = new LightingColorFilter(Color.argb(255,150,100,80), Color.BLACK);
     ColorFilter filter7 = new LightingColorFilter(Color.argb(255,80,200,210), Color.BLACK);
-    ColorFilter filter8 = new LightingColorFilter(Color.argb(255,220,100,80), Color.BLACK);
+//    ColorFilter filter8 = new LightingColorFilter(Color.argb(255,220,100,80), Color.BLACK);
 
     Bitmap bitmapImage,Save_bitmapImage,resizedBitmap;
 
@@ -45,6 +50,38 @@ public class MainActivity extends Activity {
 
         Button buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
         Button buttonSaveImage = (Button) findViewById(R.id.SaveButton);
+        Button Rotate= (Button) findViewById(R.id.Rotate);
+
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+        filter2 = new ColorMatrixColorFilter(matrix);
+
+        ColorMatrix matrix8 = new ColorMatrix();
+        matrix8.setSaturation(3);
+        filter8=new ColorMatrixColorFilter(matrix8);
+
+        main_imageView= (ImageView) findViewById(R.id.Main_imgView);
+
+
+        final Matrix matrixR = new Matrix();
+        main_imageView.setScaleType(ImageView.ScaleType.MATRIX);   //required
+
+            Rotate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    matrixR.postRotate(90f, main_imageView.getDrawable().getBounds().width() / 2, main_imageView.getDrawable().getBounds().height() / 2);
+                    main_imageView.setImageMatrix(matrixR);
+                    main_imageView.buildDrawingCache();
+
+                    Rx = main_imageView.getWidth() * 2;
+                    Ry = main_imageView.getHeight() * 2;
+
+                    bitmapImage = main_imageView.getDrawingCache();
+
+                }
+            });
+
 
         buttonLoadImage.setOnClickListener(new View.OnClickListener() {
 
@@ -53,7 +90,7 @@ public class MainActivity extends Activity {
                 Intent i = new Intent(
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(i, RESULT_LOAD_IMAGE);
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
 
@@ -87,7 +124,6 @@ public class MainActivity extends Activity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            main_imageView= (ImageView) findViewById(R.id.Main_imgView);
 
             imageView1 = (ImageView) findViewById(R.id.imgView1);
             imageView2 = (ImageView) findViewById(R.id.imgView2);
@@ -101,9 +137,7 @@ public class MainActivity extends Activity {
             bitmapImage = BitmapFactory.decodeFile(picturePath);
             Save_bitmapImage = BitmapFactory.decodeFile(picturePath);
 
-            newWidth=Save_bitmapImage.getWidth();
-            newHeight=Save_bitmapImage.getHeight();
-
+            
             if(bitmapImage.getHeight()>getScreenHeight()/2)
                 MainIh=getScreenHeight()/3;
             else
@@ -266,7 +300,8 @@ public class MainActivity extends Activity {
 
                  resizedBitmap =
                          Bitmap.createScaledBitmap(
-                    finalBitmap, newWidth, newHeight, false);
+                    finalBitmap, Rx, Ry, false);
+
                 String root = Environment.getExternalStorageDirectory().toString();
                 File myDir = new File(root + "/SimlpyEdit");
                 myDir.mkdirs();
@@ -285,7 +320,6 @@ public class MainActivity extends Activity {
                         e.printStackTrace();
                     }
             }
-
 
     public static int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
